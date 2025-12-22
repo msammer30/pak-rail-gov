@@ -9,9 +9,30 @@ const form = document.getElementById('upload-form');
 
 let selectedFile = null;
 
-fileInput.addEventListener('change', (e) => {
+    fileInput.addEventListener('change', (e) => {
     selectedFile = e.target.files[0];
     if (selectedFile) {
+        // Validate File Type
+        if (!selectedFile.type.startsWith('video/')) {
+            statusMsg.textContent = 'Error: Invalid file type. Please upload a video file.';
+            statusMsg.className = 'status error';
+            fileInput.value = ''; // Clear input
+            previewVideo.style.display = 'none';
+            uploadBtn.disabled = true;
+            return;
+        }
+
+        // Validate File Size (50MB)
+        const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+        if (selectedFile.size > maxSize) {
+            statusMsg.textContent = `Error: File size (${(selectedFile.size / (1024 * 1024)).toFixed(2)}MB) exceeds 50MB limit.`;
+            statusMsg.className = 'status error';
+            fileInput.value = ''; // Clear input
+            previewVideo.style.display = 'none';
+            uploadBtn.disabled = true;
+            return;
+        }
+
         fileLabel.textContent = selectedFile.name;
         const url = URL.createObjectURL(selectedFile);
         previewVideo.src = url;

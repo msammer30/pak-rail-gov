@@ -74,6 +74,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         'display_lhr_rwp.html', 
         'display_lhr_nwl.html', 
         'display_lhr_qta.html',
+        'display_message.html',
+        'video_display.html',
         'image_display.html'
     ];
     const currentPageFileName = window.location.pathname.split('/').pop(); 

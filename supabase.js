@@ -169,36 +169,101 @@ async function upsertGeneralMessage(content) {
 async function uploadVideo(file) {
     try {
         const fileName = `${Date.now()}_${file.name}`;
+        const bucketName = 'pak-rail-gov-media';
+
+        // 1. Delete all existing files in the bucket to "overwrite"
+        const { data: existingFiles, error: listError } = await supabase.storage
+            .from(bucketName)
+            .list();
+        
+        if (listError) throw listError;
+
+        if (existingFiles && existingFiles.length > 0) {
+            const filesToDelete = existingFiles.map(f => f.name);
+            const { error: deleteError } = await supabase.storage
+                .from(bucketName)
+                .remove(filesToDelete);
+            
+            if (deleteError) console.warn('Failed to clean up old files:', deleteError);
+            else console.log('Cleaned up old files:', filesToDelete);
+        }
+
+        // 2. Upload the new file
         const { data, error } = await supabase.storage
-            .from('pak-rail-gov-media')
+            .from(bucketName)
             .upload(fileName, file);
 
         if (error) throw error;
 
-        // Get public URL
+        // 3. Get public URL
         const { data: publicUrlData } = supabase.storage
-            .from('pak-rail-gov-media')
+            .from(bucketName)
             .getPublicUrl(fileName);
 
         const publicUrl = publicUrlData.publicUrl;
 
-        // Save record to "videos" table (Memory Bucket)
-        const { error: dbError } = await supabase
+        // 4. Update "general_message" table "uploaded_media" column
+        // We assume there is only one row with the fixed ID
+        const fixedId = '00000000-0000-0000-0000-000000000001';
+        
+        // First optimize: try to update specific column
+        const { error: updateError } = await supabase
+            .from('general_message')
+            .update({ uploaded_media: publicUrl })
+            .eq('id', fixedId);
+
+        if (updateError) {
+             // If update failed (maybe row doesn't exist?), try upsert
+             const { error: upsertError } = await supabase
+                .from('general_message')
+                .upsert(
+                    { id: fixedId, uploaded_media: publicUrl, content: 'Default Message' }, // ensure content is not null if row is new
+                    { onConflict: 'id' }
+                );
+             if (upsertError) throw upsertError;
+        }
+
+        // 5. Still save to "videos" table for history/logging (optional but good for debugging)
+         await supabase
             .from('videos')
             .insert([{
                 filename: fileName,
                 public_url: publicUrl
             }]);
 
-        if (dbError) {
-            console.warn('File uploaded but failed to save to database:', dbError);
-            // We still return success for the file upload, but note the DB failure
-        }
-
         return { success: true, data: publicUrlData, filePath: fileName, publicUrl };
     } catch (error) {
         console.error('Error uploading video:', error);
         return { success: false, message: 'Failed to upload video: ' + error.message };
+    }
+}
+
+// Function to get the latest video
+async function getLatestVideo() {
+    console.log('getLatestVideo called in supabase.js (New Logic)');
+    try {
+        // Fetch URL from "general_message" table "uploaded_media" column
+        const fixedId = '00000000-0000-0000-0000-000000000001';
+        
+        const { data, error } = await supabase
+            .from('general_message')
+            .select('uploaded_media')
+            .eq('id', fixedId)
+            .single();
+
+        if (error) throw error;
+
+        if (data && data.uploaded_media) {
+            console.log('Video URL found in general_message:', data.uploaded_media);
+            return { success: true, url: data.uploaded_media };
+        }
+
+        console.warn('No uploaded_media found in general_message');
+        return { success: false, message: 'No video URL found.' };
+
+    } catch (error) {
+        console.error('Error fetching latest video URL:', error);
+        return { success: false, message: 'Failed to fetch video URL: ' + error.message };
     }
 }
 
@@ -211,6 +276,7 @@ export {
     updateSchedule,
     deleteSchedule,
     uploadVideo,
+    getLatestVideo,
     getGeneralMessage,
     upsertGeneralMessage
 }; 

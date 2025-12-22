@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Display</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Preserve aspect ratio */
+        }
+
+        .loading-overlay {
+            position: absolute;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading-overlay">Loading latest video...</div>
+    <video id="video-player" autoplay muted loop playsinline></video>
+
+    <script type="module">
+        console.log('Video Display Script Started');
+        import { getLatestVideo } from './supabase.js';
+        console.log('Import successful:', typeof getLatestVideo);
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const videoPlayer = document.getElementById('video-player');
+            const loading = document.getElementById('loading');
+
+            console.log('DOMContentLoaded triggered');
+
+            // Fetch and play latest video
+            try {
+                console.log('Calling getLatestVideo...');
+                const result = await getLatestVideo();
+                console.log('getLatestVideo result:', result);
+
+                if (result.success && result.url) {
+                    console.log('Setting video source:', result.url);
+                    videoPlayer.src = result.url;
+                    videoPlayer.style.display = 'block';
+                    loading.style.display = 'none';
+                    
+                    // Force play
+                    videoPlayer.play().catch(e => console.warn('Autoplay prevented:', e));
+                } else {
+                    console.warn('Video fetch failed or no URL:', result);
+                    loading.textContent = 'No video available to display.';
+                }
+            } catch (error) {
+                console.error('CRITICAL Error in video display:', error);
+                loading.textContent = 'Error loading video: ' + error.message;
+            }
+
+            // Automatic Page Cycling
+            const pageSequence = [
+                'display_lhr_kc.html', 
+                'display_lhr_mianwali.html', 
+                'display_lhr_psh.html', 
+                'display_lhr_fsld.html', 
+                'display_lhr_rwp.html', 
+                'display_lhr_nwl.html', 
+                'display_lhr_qta.html',
+                'display_message.html',
+                'video_display.html',
+                'image_display.html'
+            ];
+            
+            const currentPageFileName = window.location.pathname.split('/').pop();
+            const currentIndexInSequence = pageSequence.indexOf(currentPageFileName);
+            
+            if (currentIndexInSequence !== -1) {
+                const nextPageIndex = (currentIndexInSequence + 1) % pageSequence.length;
+                const nextPageFileName = pageSequence[nextPageIndex];
+                
+                setTimeout(() => {
+                    window.location.href = nextPageFileName;
+                }, 30000);
+            }
+        });
+    </script>
+</body>
+</html>
