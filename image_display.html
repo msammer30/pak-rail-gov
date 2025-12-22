@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Display</title>
+    <link rel="stylesheet" href="image_display_style.css">
+</head>
+<body>
+ 
+
+    
+    <div class="welcome-text">
+        <p class="en-text">Welcome to Historical Lahore Railway Station</p> 
+        <p class="ur-text">تاریخی لاہور ریلوے اسٹیشن پر خوش آمدید</p>
+    </div>
+    <!-- Independence Day Celebration -->
+    <!-- <div class="independence-day-celebration">
+        <div class="independence-text">
+            <p class="ur-independence">ریلوے سپریٹینڈنٹ لاہور کی طرف سے تمام وطن عزیز کو 14 اگست مبارک ہو</p>
+        </div> -->
+        <!-- <div class="flag-container">
+            <img src="./PR p.png">
+        </div> -->
+    </div>
+    <<div class="image-container">
+        <img src="./saloon .jpeg">
+    </div> 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pageSequence = [ // Defines the order of pages for automatic cycling
+                'display_lhr_kc.html', 
+                'display_lhr_psh.html', 
+                'display_lhr_fsld.html', 
+                'display_lhr_rwp.html', 
+                'display_lhr_nwl.html', 
+                'display_lhr_mianwali.html', 
+                'display_lhr_qta.html',
+                'image_display.html'
+            ];
+            const currentPageFileName = window.location.pathname.split('/').pop(); 
+            const currentIndexInSequence = pageSequence.indexOf(currentPageFileName);
+            
+            if (currentIndexInSequence !== -1) { 
+                const nextPageIndex = (currentIndexInSequence + 1) % pageSequence.length; 
+                const nextPageFileName = pageSequence[nextPageIndex];
+                
+                setTimeout(() => {
+                    window.location.href = nextPageFileName;
+                }, 30000); 
+            }
+        });
+    </script>
+</body>
+</html>

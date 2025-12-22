@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <title>LHR - NWL Schedules</title>
+    <link rel="stylesheet" href="display_style.css">
+</head>
+<body>
+    <!-- Railway Announcement -->
+    <!-- <div id="railway-announcement" class="railway-announcement">
+        <div class="announcement-content">
+            <strong>تمام مسافر حضرات کو ریلوے انتظامیہ کی طرف سے اطلاع دی جاتی ہے کہ  107 اسلام أباد ایکسپریس کی ڈیریلمنٹ کی وجہ سے راولپنڈی سے لاہور أنے اور جانے کی ٹرین کو وزیرأباد ۔ حافظ أباد ۔ سانگلہ ہلز کی طرف روٹ کر دیا گیا ہے۔<br>
+            مسافروں کو وقتی پریشانی کے لیے ریلوے معذرت خواہ ہے۔    شکریہ</strong>
+        </div>
+    </div> -->
+
+    <h1><span id="page-title-text">Lahore - Narowal-SLK Route Schedules</span> <span id="current-datetime" class="current-datetime-display"></span></h1>
+
+    <div class="display-container">
+        <section id="lhr-nwl-departures-section" class="route-section departures-theme">
+                        <h2><span class="en-text">LHR <span class="arrow">&rarr;</span> NWL <span class="arrow">&rarr;</span> SLK (Departures)</span><span class="ur-text">لاہور - نارووال - سیالکوٹ روانگی</span></h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Train No</th>
+                            <th>Train Name</th>
+                            <th>Scheduled</th>
+                            <th>Expected</th>
+                            <th>Status</th>
+                            <th>Platform</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lhr-nwl-departures-body">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="nwl-lhr-arrivals-section" class="route-section arrivals-theme">
+            <h2><span class="en-text">SLK-NWL-LHR (Arrivals)</span><span class="ur-text">سیالکوٹ-نارووال - لاہور آمد</span></h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Train No</th>
+                            <th>Train Name</th>
+                            <th>Scheduled</th>
+                            <th>Expected</th>
+                            <th>Status</th>
+                            <th>Platform</th>
+                        </tr>
+                    </thead>
+                    <tbody id="nwl-lhr-arrivals-body">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="display_lhr_nwl_script.js"></script>
+</body>
+</html>

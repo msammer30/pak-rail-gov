@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LHR - KC Schedules</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="display_style.css">
+</head>
+<body>
+    <!-- Railway Announcement -->
+    <!-- <div id="railway-announcement" class="railway-announcement">
+        <div class="announcement-content">
+            <strong>تمام مسافر حضرات کو ریلوے انتظامیہ کی طرف سے اطلاع دی جاتی ہے کہ  107 اسلام أباد ایکسپریس کی ڈیریلمنٹ کی وجہ سے راولپنڈی سے لاہور أنے اور جانے کی ٹرین کو وزیرأباد ۔ حافظ أباد ۔ سانگلہ ہلز کی طرف روٹ کر دیا گیا ہے۔<br>
+            مسافروں کو وقتی پریشانی کے لیے ریلوے معذرت خواہ ہے۔    شکریہ</strong>
+        </div>
+    </div> -->
+
+    <h1><span id="page-title-text">Lahore - Karachi-I Route Schedules</span> <span id="current-datetime" class="current-datetime-display"></span></h1>
+
+    <div class="display-container">
+        <section id="lhr-kc-departures-section" class="route-section departures-theme">
+            <h2><span class="en-text">LHR <span class="arrow">&rarr;</span> KC (Departures)</span><span class="ur-text">لاہور - کراچی روانگی</span></h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Train No</th>
+                            <th>Train Name</th>
+                            <th>Scheduled</th>
+                            <th>Expected</th>
+                            <th>Status</th>
+                            <th>Platform</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lhr-kc-departures-body">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="kc-lhr-arrivals-section" class="route-section arrivals-theme">
+            <h2><span class="en-text">KC <span class="arrow">&rarr;</span> LHR (Arrivals)</span><span class="ur-text">کراچی - لاہور آمد</span></h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Train No</th>
+                            <th>Train Name</th>
+                            <th>Scheduled</th>
+                            <th>Expected</th>
+                            <th>Status</th>
+                            <th>Platform</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kc-lhr-arrivals-body">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="display_lhr_kc_script.js"></script>
+</body>
+</html>

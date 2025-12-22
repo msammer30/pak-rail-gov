@@ -1,0 +1,182 @@
+/* Railway Announcement Styles */
+.railway-announcement {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffff00;
+    color: #000000;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(255, 255, 0, 0.3);
+    z-index: 1000;
+    width: 100vw;
+    height: 40vh;
+    max-width: 100%;
+    text-align: center;
+    font-family: "Noto Nastaliq Urdu", serif;
+    font-size: 2rem;
+    font-weight: bold;
+    border: 3px solid #ffcc00;
+    animation: announcementGlow 2s infinite ease-in-out;
+}
+
+.announcement-content {
+    line-height: 2.3;
+
+}
+
+@keyframes announcementGlow {
+    0%, 100% { box-shadow: 0 4px 12px rgba(255, 255, 0, 0.3); }
+    50% { box-shadow: 0 6px 20px rgba(255, 255, 0, 0.6); }
+}
+
+/* Independence Day Celebration Styles */
+.image-container-celebration{
+    display: flex;
+    gap: 1rem;
+}
+
+.independence-day-celebration {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: celebrationGlow 3s infinite ease-in-out;
+}
+
+.flag-container {
+    margin-bottom: 20px;
+}
+
+.pakistan-flag {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+    animation: flagWave 4s infinite ease-in-out;
+}
+
+.independence-text {
+    margin-top: 15px;
+}
+
+.ur-independence {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #00ff00;
+    font-family: "Noto Nastaliq Urdu", serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    animation: independenceColor 6s infinite;
+    margin: 0;
+    padding: 10px;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.7), rgba(0, 100, 0, 0.7));
+    border-radius: 15px;
+    border: 3px solid #00ff00;
+}
+
+@keyframes celebrationGlow {
+    0%, 100% { 
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% { 
+        transform: scale(1.02);
+        filter: brightness(1.1);
+    }
+}
+
+@keyframes flagWave {
+    0%, 100% { 
+        transform: rotateY(0deg);
+    }
+    50% { 
+        transform: rotateY(5deg);
+    }
+}
+
+@keyframes independenceColor {
+    0% { color: #00ff00; border-color: #00ff00; }
+    25% { color: #ffffff; border-color: #ffffff; }
+    50% { color: #00ff00; border-color: #00ff00; }
+    75% { color: #ffff00; border-color: #ffff00; }
+    100% { color: #00ff00; border-color: #00ff00; }
+}
+
+body {
+    background-color: #003300;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.image-container {
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(144, 238, 144, 0.5), 0 0 40px rgba(144, 238, 144, 0.3), 0 0 60px rgba(144, 238, 144, 0.2);
+    animation: glow 2s infinite ease-in-out, pulse 3s infinite ease-in-out;
+    margin-top: 20px;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.welcome-text {
+    text-align: center;
+    padding: 20px;
+}
+
+.welcome-text p {
+    margin: 0;
+    font-size: 3.0em;
+    font-weight: bold;
+    animation: color-change 5s infinite;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.en-text {
+    color: yellow;
+}
+
+.ur-text {
+    color: yellow;
+}
+
+@keyframes color-change {
+    0% { color: yellow; }
+    25% { color: red; }
+    50% { color: green; }
+    75% { color: blue; }
+    100% { color: purple; }
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 20px rgba(144, 238, 144, 0.5), 0 0 40px rgba(144, 238, 144, 0.3), 0 0 60px rgba(144, 238, 144, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(144, 238, 144, 0.8), 0 0 50px rgba(144, 238, 144, 0.5), 0 0 70px rgba(144, 238, 144, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(144, 238, 144, 0.5), 0 0 40px rgba(144, 238, 144, 0.3), 0 0 60px rgba(144, 238, 144, 0.2);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

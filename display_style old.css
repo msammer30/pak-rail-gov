@@ -1,0 +1,337 @@
+html, body {
+    height: 100%; /* Ensure body can fill the viewport height */
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    color: #f0f0f0; /* Light text for dark themes */
+    font-size: 16px; /* Base font size for projector readability */
+    line-height: 1.6;
+    background-color: #000000; /* Shine Black Background */
+    padding-bottom: 60px; /* Add padding to the bottom of the body to make space for the footer */
+    animation: slideIn 1s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+h1 { /* General H1 for the page title, not inside a theme */
+    text-align: center;
+    font-size: 2.8em; /* Large main heading */
+    margin-bottom: 30px;
+    font-weight: 600;
+    color: yellow; /* Changed to yellow */
+    animation: subtleGlowFooter 2s infinite ease-in-out; /* Apply yellow glow */
+    
+    /* Flex layout to position title and time */
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline; /* Align based on text baseline */
+    flex-wrap: wrap; 
+    padding-bottom: 10px; 
+    border-bottom: 1px solid #333; 
+    margin-bottom: 25px; 
+}
+
+/* Span for the main title text, if needed for alignment */
+#page-title-text { 
+    margin-right: auto; /* Push date/time to the right */
+}
+
+.current-datetime-display {
+    /* font-size is removed to inherit from h1 */
+    font-weight: normal;
+    /* color is inherited from h1 */
+    margin-left: 20px; 
+    white-space: nowrap; 
+    flex-shrink: 0; 
+}
+
+.display-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px; /* Generous gap between sections */
+    width: 100%;
+    max-width: 2400px; /* Allow for very wide projector screens */
+    margin: 0 auto;
+}
+
+.route-section {
+    flex: 1 1 48%; /* Each section takes roughly half the space */
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column; /* Ensure table wrapper can grow */
+    min-width: 400px; /* Minimum width before stacking (if media query added) */
+}
+
+.route-section h2 {
+    font-size: 2em; /* Large section headings */
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.route-section h2 .arrow { 
+    font-size: 0.8em; 
+    margin: 0 10px; 
+}
+
+
+.table-wrapper {
+    flex-grow: 1; 
+    overflow-y: auto; 
+    border-radius: 6px; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.1em; 
+}
+
+th, td {
+    padding: 12px 15px; 
+    text-align: left;
+    vertical-align: middle;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+thead th {
+    font-weight: 600; 
+    font-size: 1.2em;
+    white-space: nowrap; 
+    position: sticky; 
+    top: 0; 
+    z-index: 2;
+}
+
+tbody tr:last-child td {
+    border-bottom: none; 
+}
+
+/* --- Departures Theme (Green) --- */
+.departures-theme {
+    background-color: #004d00; 
+}
+.departures-theme h2 { 
+    color: yellow; 
+    border-bottom-color: #38761d; 
+}
+.departures-theme thead th {
+    background-color: #004d00; 
+    color: #b0ffb0; 
+}
+.departures-theme th, .departures-theme td {
+    border-color: #006d00; 
+    color: #e6ffe6; 
+}
+.departures-theme tbody tr:nth-child(even) {
+    background-color: #005500; 
+}
+.departures-theme tbody tr:hover {
+    background-color: #006600; 
+}
+.departures-theme .action-btn {
+    color: #003300; 
+    border: none;
+    padding: 6px 10px;
+    font-size: 0.9em;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 3px;
+    transition: background-color 0.2s, transform 0.1s ease;
+}
+.departures-theme .edit-btn { background-color: #90ee90; } 
+.departures-theme .edit-btn:hover { background-color: #77dd77; transform: translateY(-1px); }
+.departures-theme .remove-btn { background-color: #ff7777; color: #330000; } 
+.departures-theme .remove-btn:hover { background-color: #ff5555; transform: translateY(-1px); }
+
+
+/* --- Arrivals Theme (Blue) --- */
+.arrivals-theme {
+    background-color: #003366; 
+}
+.arrivals-theme h2 { 
+    color: yellow; 
+    border-bottom-color: #002244; 
+}
+.arrivals-theme thead th {
+    background-color: #003366; 
+    color: #cceeff; 
+}
+.arrivals-theme th, .arrivals-theme td {
+    border-color: #0055aa; 
+    color: #e0f7ff; 
+}
+.arrivals-theme tbody tr:nth-child(even) {
+    background-color: #004077; 
+}
+.arrivals-theme tbody tr:hover {
+    background-color: #005099; 
+}
+.arrivals-theme .action-btn {
+    color: #002244;  
+    border: none;
+    padding: 6px 10px;
+    font-size: 0.9em;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 3px;
+    transition: background-color 0.2s, transform 0.1s ease;
+}
+.arrivals-theme .edit-btn { background-color: #add8e6; } 
+.arrivals-theme .edit-btn:hover { background-color: #99ccdd; transform: translateY(-1px); }
+.arrivals-theme .remove-btn { background-color: #ff7777; color: #330000; } 
+.arrivals-theme .remove-btn:hover { background-color: #ff5555; transform: translateY(-1px); }
+
+/* Footer Styling */
+.footer {
+    text-align: center;
+    padding: 15px;
+    margin-top: 25px; 
+    background-color: #0f0f0f; 
+    color: #999; 
+    font-size: 0.9em;
+    border-top: 1px solid #333333; 
+    width: 100%;
+    box-sizing: border-box;
+    position: relative; 
+    bottom: 0;
+    left: 0;
+    color: yellow; /* Changed to yellow */
+    animation: subtleGlowFooter 2s infinite ease-in-out; /* Added animation */
+}
+
+/* Animation Keyframes */
+@keyframes subtleGlowFooter { /* Define glow animation for footer */
+    0%, 100% {
+        text-shadow: 0 0 3px rgba(255, 255, 0, 0.4);
+    }
+    50% {
+        text-shadow: 0 0 8px rgba(255, 255, 0, 0.8);
+    }
+}
+
+@keyframes subtleGlow { /* Existing glow for train name - can be kept or merged if identical */
+    0%, 100% {
+        text-shadow: 0 0 4px rgba(255, 255, 224, 0.2), 0 0 6px rgba(255, 255, 224, 0.2);
+    }
+    50% {
+        text-shadow: 0 0 8px rgba(255, 255, 224, 0.5), 0 0 12px rgba(255, 255, 224, 0.5);
+    }
+}
+
+/* @keyframes statusColorPulseDeparture {
+    0%, 100% {
+        color: #e6ffe6; 
+    }
+    50% {
+        color: #c0ffc0; 
+    }
+}
+
+@keyframes statusColorPulseArrival {
+    0%, 100% {
+        color: #e0f7ff; 
+    }
+    50% {
+        color: #d0f0ff; 
+    }
+} */
+
+@keyframes subtleGlowStatusDeparture {
+    0%, 100% {
+        text-shadow: 0 0 4px rgba(144, 238, 144, 0.3), 0 0 6px rgba(144, 238, 144, 0.3); /* Light green glow */
+    }
+    50% {
+        text-shadow: 0 0 8px rgba(144, 238, 144, 0.6), 0 0 12px rgba(144, 238, 144, 0.6);
+    }
+}
+
+@keyframes subtleGlowStatusArrival {
+    0%, 100% {
+        text-shadow: 0 0 4px rgba(173, 216, 230, 0.3), 0 0 6px rgba(173, 216, 230, 0.3); /* Light blue glow */
+    }
+    50% {
+        text-shadow: 0 0 8px rgba(173, 216, 230, 0.6), 0 0 12px rgba(173, 216, 230, 0.6);
+    }
+}
+
+
+/* Animation Classes (to be applied by JavaScript) */
+.animated-train-name {
+    animation: subtleGlow 3s infinite ease-in-out;
+}
+
+.departures-theme .animated-status { /* Applied to status cell in departure theme */
+    animation: subtleGlowStatusDeparture 2.5s infinite ease-in-out;
+}
+
+.arrivals-theme .animated-status { /* Applied to status cell in arrival theme */
+    animation: subtleGlowStatusArrival 2.5s infinite ease-in-out;
+}
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 1024px) { 
+    .display-container {
+        flex-direction: column;
+        gap: 25px; 
+    }
+    .route-section {
+        flex-basis: auto; 
+        min-width: unset; 
+    }
+     h1 { font-size: 2.2em; }
+    .route-section h2 { font-size: 1.8em; }
+    table { font-size: 1em; }
+    thead th { font-size: 1.1em; }
+    .footer { font-size: 0.85em; padding: 10px; }
+}
+
+@media (max-width: 768px) {
+    body { padding: 15px; padding-bottom: 50px; } 
+    h1 { font-size: 2em; }
+    .route-section h2 { font-size: 1.6em; }
+    .route-section { padding: 20px; }
+    th, td { padding: 10px 12px; }
+    table { font-size: 0.95em; }
+    thead th { font-size: 1em; }
+    .footer { font-size: 0.8em; }
+}
+
+@media (max-width: 480px) {
+    body { padding: 10px; padding-bottom: 40px; } 
+    h1 { font-size: 1.8em; }
+    .route-section h2 { font-size: 1.4em; }
+    .route-section { padding: 15px; }
+    th, td { padding: 8px 10px; font-size: 0.9em;}
+    thead th { font-size: 0.95em; }
+    .action-btn { padding: 5px 8px; font-size: 0.8em; }
+    .footer { font-size: 0.75em; padding: 8px; }
+}

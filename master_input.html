@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Master Train Data Input</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #2c3e50;
+      /* Neutral dark background */
+      color: #ecf0f1;
+      margin: 0;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #3498db;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      /* Allow wrapping for smaller screens */
+      padding-bottom: 10px;
+      /* Add some padding if it wraps */
+      border-bottom: 1px solid #34495e;
+      /* Optional: visual separator */
+      margin-bottom: 25px;
+    }
+
+    #page-title-text {
+      flex-grow: 1;
+      /* Allow title to take available space */
+      text-align: left;
+      /* Align title to left when date is on right */
+      text-transform: uppercase;
+      text-shadow: 0 0 77px #0096ff;
+    }
+
+    .current-datetime-display {
+      font-size: 1em;
+      font-weight: normal;
+      color: #bdc3c7;
+    }
+
+    .forms-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,
+          minmax(350px, 1fr));
+      /* Responsive grid */
+      gap: 20px;
+      padding-bottom: 70px;
+      /* Space for the footer */
+    }
+
+    .form-section {
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-section h2 {
+      margin-top: 0;
+      font-size: 1.2em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 8px;
+      color: yellow;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-section label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      font-size: 1em;
+      color: #ecf0f1;
+    }
+
+    .form-section input[type="text"],
+    .form-section input[type="time"],
+    .form-section select {
+      width: calc(100% - 16px);
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #4a6572;
+      background-color: #233748;
+      color: #ecf0f1;
+      box-sizing: border-box;
+    }
+
+    .form-section button {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      width: 100%;
+      transition: background-color 0.2s ease;
+    }
+
+    .form-section button:hover {
+      background-color: #2980b9;
+    }
+
+    .auto-display-field {
+      display: inline-block;
+      /* Or block if you want it full width like inputs */
+      width: calc(100% - 16px);
+      /* Match input width */
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #4a6572;
+      background-color: #233748;
+      color: #ecf0f1;
+      box-sizing: border-box;
+      min-height: 37px;
+      /* Approx height of an input field with 8px padding */
+      line-height: normal;
+      /* Adjust if text isn't vertically centered */
+      vertical-align: middle;
+    }
+
+    /* Form Section Specific Colors */
+    .form-section-lhr-kc,
+    .form-section-kc-lhr {
+      background-color: #3498db;
+      /* Blue */
+    }
+
+    .form-section-lhr-rwp,
+    .form-section-rwp-lhr {
+      background-color: #2ecc71;
+      /* Emerald Green */
+    }
+
+    .form-section-lhr-qta,
+    .form-section-qta-lhr {
+      background-color: #f1c40f;
+      /* Sunflower Yellow */
+    }
+
+    .form-section-lhr-fsld,
+    .form-section-fsld-lhr {
+      background-color: #e74c3c;
+      /* Alizarin Red */
+    }
+
+    .form-section-lhr-nwl,
+    .form-section-nwl-lhr {
+      background-color: #9b59b6;
+      /* Amethyst Purple */
+    }
+
+    .form-section-lhr-mianwali,
+    .form-section-mianwali-lhr {
+      background-color: #e67e22;
+      /* Carrot Orange */
+    }
+
+    .form-section-lhr-psh,
+    .form-section-psh-lhr {
+      background-color: #1abc9c;
+      /* Turquoise/Sea Green */
+    }
+
+    /* Text color adjustments for readability on specific backgrounds */
+    .form-section-lhr-qta h2,
+    .form-section-qta-lhr h2,
+    .form-section-lhr-fsld h2,
+    .form-section-fsld-lhr h2,
+    .form-section-lhr-mianwali h2,
+    .form-section-mianwali-lhr h2,
+    .form-section-lhr-nwl h2,
+    .form-section-nwl-lhr h2 {
+      color: #2c3e50;
+    }
+
+    .form-section-lhr-qta label,
+    .form-section-qta-lhr label,
+    .form-section-lhr-fsld label,
+    .form-section-fsld-lhr label,
+    .form-section-lhr-mianwali label,
+    .form-section-mianwali-lhr label,
+    .form-section-lhr-nwl label,
+    .form-section-nwl-lhr label {
+      color: #34495e;
+    }
+
+    .form-section-lhr-qta input,
+    .form-section-qta-lhr input,
+    .form-section-lhr-qta select,
+    .form-section-qta-lhr select,
+    .form-section-lhr-fsld input,
+    .form-section-fsld-lhr input,
+    .form-section-lhr-fsld select,
+    .form-section-fsld-lhr select,
+    .form-section-lhr-mianwali input,
+    .form-section-mianwali-lhr input,
+    .form-section-lhr-mianwali select,
+    .form-section-mianwali-lhr select,
+    .form-section-lhr-nwl input,
+    .form-section-nwl-lhr input,
+    .form-section-lhr-nwl select,
+    .form-section-nwl-lhr select {
+      background-color: rgba(0, 0, 0, 0.1);
+      /* Darker input on bright BGs */
+      border-color: rgba(0, 0, 0, 0.2);
+      color: #2c3e50;
+    }
+
+    /* Specific button contrast for very light backgrounds if default blue is not good */
+    .form-section-lhr-qta button,
+    .form-section-qta-lhr button {
+      /* Example for yellow */
+      background-color: #c0392b;
+      /* Darker Red button on yellow */
+      color: white;
+    }
+
+    .form-section-lhr-qta button:hover,
+    .form-section-qta-lhr button:hover {
+      background-color: #a5281b;
+    }
+
+    #confirmation-message {
+      text-align: center;
+      padding: 10px;
+      background-color: #27ae60;
+      color: white;
+      border-radius: 5px;
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      width: auto;
+      min-width: 300px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+      background-color: #1f2b38;
+      color: yellow;
+      font-size: 0.9em;
+      border-top: 1px solid #2c3e50;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      animation: subtleGlowFooter 2s infinite ease-in-out;
+      z-index: 99999;
+    }
+
+    @keyframes subtleGlowFooter {
+
+      0%,
+      100% {
+        text-shadow: 0 0 3px rgba(255, 255, 0, 0.4);
+      }
+
+      50% {
+        text-shadow: 0 0 8px rgba(255, 255, 0, 0.8);
+      }
+    }
+
+    .data-table-wrapper {
+      margin-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 15px;
+      max-height: 300px;
+      /* Or a suitable height */
+      overflow-y: auto;
+    }
+
+    .data-table-wrapper table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85em;
+      /* Smaller font for these tables */
+    }
+
+    .data-table-wrapper th,
+    .data-table-wrapper td {
+      border: 1px solid #4a6572;
+      /* Consistent with input borders */
+      padding: 5px 7px;
+      text-align: left;
+    }
+
+    .data-table-wrapper thead th {
+      background-color: #233748;
+      /* Darker than section, lighter than body */
+      color: #95a5a6;
+      /* Lighter grey for headers */
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      /* Ensure header is above scrolling content */
+    }
+
+    /* Action buttons in master table */
+    .data-table-wrapper .action-btn {
+      padding: 3px 6px;
+      font-size: 0.8em;
+      margin-right: 3px;
+      color: white;
+      /* Default for most buttons */
+    }
+
+    .data-table-wrapper .edit-btn {
+      background-color: #5bc0de;
+    }
+
+    /* Info blue */
+    .data-table-wrapper .edit-btn:hover {
+      background-color: #31b0d5;
+    }
+
+    .data-table-wrapper .remove-btn {
+      background-color: #d9534f;
+    }
+
+    /* Danger red */
+    .data-table-wrapper .remove-btn:hover {
+      background-color: #c9302c;
+    }
+
+    /* Latest Entry Styling */
+    .latest-entry {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-left: 4px solid #27ae60;
+      animation: fadeIn 0.5s;
+    }
+
+    .latest-entry h4 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      color: #2ecc71;
+      font-size: 0.95em;
+    }
+
+    .latest-entry p {
+      margin: 5px 0;
+      font-size: 0.9em;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .btn-routes-slids {
+      background-color: rgb(255, 213, 0);
+      color: black !important;
+      text-decoration: none;
+      padding: 0.5rem;
+      border-radius: 5px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .btn-routes-slids:hover {
+      background-color: rgb(255, 231, 110);
+      color: black !important;
+    }
+
+    .btn-routes-slids-container {
+      width: 100vw;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      top: 85px;
+    }
+
+    .display-nav>h3 {
+      font-size: 1.5rem;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>
+    <span id="page-title-text">Master Train Data Input</span><span id="current-datetime"
+      class="current-datetime-display"></span>
+  </h1>
+  <div id="confirmation-message">Data saved successfully!</div>
+
+  <nav class="display-nav">
+    <h3>Display Pages</h3>
+    <div class="btn-routes-slids-container">
+      <a class="btn-routes-slids" href="display_lhr_kc.html" target="_blank" style="color: yellow">LHR-KC</a>
+      <a class="btn-routes-slids" href="display_lhr_psh.html" target="_blank" style="color: yellow">LHR-PSH</a>
+      <a class="btn-routes-slids" href="display_lhr_fsld.html" target="_blank" style="color: yellow">LHR-FSLD</a>
+      <a class="btn-routes-slids" href="display_lhr_rwp.html" target="_blank" style="color: yellow">LHR-RWP</a>
+      <a class="btn-routes-slids" href="display_lhr_nwl.html" target="_blank" style="color: yellow">LHR-NWL</a>
+      <a class="btn-routes-slids" href="display_lhr_mianwali.html" target="_blank"
+        style="color: yellow">LHR-Mianwali</a>
+      <a class="btn-routes-slids" href="display_lhr_qta.html" target="_blank" style="color: yellow">LHR-QTA</a>
+    </div>
+  </nav>
+
+  <!-- New Features Navigation -->
+  <nav class="display-nav" style="margin-top: 20px;">
+    <h3>🆕 New Features</h3>
+    <div class="btn-routes-slids-container" style="position: static; margin-top: 15px;">
+      <a class="btn-routes-slids" href="display_message.html" target="_blank"
+        style="background-color: #8e44ad; color: white;">📢 Message Display</a>
+      <a class="btn-routes-slids" href="upload_video.html" target="_blank"
+        style="background-color: #e74c3c; color: white;">🎥 Upload Video</a>
+    </div>
+  </nav>
+
+
+  <div class="forms-container">
+    <!-- General Message Section -->
+    <section class="form-section form-section-message" style="background-color: #8e44ad;">
+      <h2>General Message / عام پیغام</h2>
+      <form id="form-general-message">
+        <div>
+          <label for="general-message-content">Message Content:</label>
+          <input type="text" id="general-message-content" placeholder="Enter message to display..." required />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add Message</button>
+        </div>
+      </form>
+      <div id="table-data-general-message" class="data-table-wrapper">
+        <!-- Messages will be listed here -->
+      </div>
+    </section>
+
+    <!-- LHR-KC Departure -->
+    <section class="form-section form-section-lhr-kc">
+      <h2>LHR - KC - I (Departure) / لاہور - کراچی روانگی</h2>
+      <form id="form-lhr-kc-dep">
+        <div>
+          <label for="lhr-kc-dep-trainNo">Train No:</label><select id="lhr-kc-dep-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="lhr-kc-dep-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="lhr-kc-dep-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="lhr-kc-dep-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="lhr-kc-dep-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="lhr-kc-dep-expectedTime">Expected Time:</label><input type="time" id="lhr-kc-dep-expectedTime" />
+        </div>
+        <div>
+          <label for="lhr-kc-dep-status">Status:</label><select id="lhr-kc-dep-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Departed">Departed</option>
+          </select>
+        </div>
+        <div>
+          <label for="lhr-kc-dep-platformNo">Platform No:</label><input type="text" id="lhr-kc-dep-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add LHR-KC Departure</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-lhr-kc-dep" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- KC-LHR Arrival -->
+    <section class="form-section form-section-kc-lhr">
+      <h2>KC - LHR - I (Arrival) / کراچی - لاہور آمد</h2>
+      <form id="form-kc-lhr-arr">
+        <div>
+          <label for="kc-lhr-arr-trainNo">Train No:</label><select id="kc-lhr-arr-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="kc-lhr-arr-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="kc-lhr-arr-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="kc-lhr-arr-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="kc-lhr-arr-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="kc-lhr-arr-expectedTime">Expected Time:</label><input type="time" id="kc-lhr-arr-expectedTime" />
+        </div>
+        <div>
+          <label for="kc-lhr-arr-status">Status:</label><select id="kc-lhr-arr-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Arrived">Arrived</option>
+          </select>
+        </div>
+        <div>
+          <label for="kc-lhr-arr-platformNo">Platform No:</label><input type="text" id="kc-lhr-arr-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add KC-LHR Arrival</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-kc-lhr-arr" class="data-table-wrapper"></div>
+    </section>
+    <!-- LHR-Mianwali Departure -->
+    <section class="form-section form-section-lhr-mianwali">
+      <h2>LHR - KC-II (Departure) / لاہور - کراچی روانگی</h2>
+      <form id="form-lhr-mianwali-dep">
+        <div>
+          <label for="lhr-mianwali-dep-trainNo">Train No:</label><select id="lhr-mianwali-dep-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="lhr-mianwali-dep-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="lhr-mianwali-dep-scheduledTime-display"
+            class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="lhr-mianwali-dep-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="lhr-mianwali-dep-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="lhr-mianwali-dep-expectedTime">Expected Time:</label><input type="time"
+            id="lhr-mianwali-dep-expectedTime" />
+        </div>
+        <div>
+          <label for="lhr-mianwali-dep-status">Status:</label><select id="lhr-mianwali-dep-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Departed">Departed</option>
+          </select>
+        </div>
+        <div>
+          <label for="lhr-mianwali-dep-platformNo">Platform No:</label><input type="text"
+            id="lhr-mianwali-dep-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add LHR-Mianwali Departure</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-lhr-mianwali-dep" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- Mianwali-LHR Arrival -->
+    <section class="form-section form-section-mianwali-lhr">
+      <h2>KC - LHR -II (Arrival) / کراچی - لاہور- آمد</h2>
+      <form id="form-mianwali-lhr-arr">
+        <div>
+          <label for="mianwali-lhr-arr-trainNo">Train No:</label><select id="mianwali-lhr-arr-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="mianwali-lhr-arr-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="mianwali-lhr-arr-scheduledTime-display"
+            class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="mianwali-lhr-arr-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="mianwali-lhr-arr-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="mianwali-lhr-arr-expectedTime">Expected Time:</label><input type="time"
+            id="mianwali-lhr-arr-expectedTime" />
+        </div>
+        <div>
+          <label for="mianwali-lhr-arr-status">Status:</label><select id="mianwali-lhr-arr-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Arrived">Arrived</option>
+          </select>
+        </div>
+        <div>
+          <label for="mianwali-lhr-arr-platformNo">Platform No:</label><input type="text"
+            id="mianwali-lhr-arr-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add Mianwali-LHR Arrival</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-mianwali-lhr-arr" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- LHR-PSH Departure -->
+    <section class="form-section form-section-lhr-psh">
+      <h2>LHR - PSH (Departure) / لاہور - پشاور روانگی</h2>
+      <form id="form-lhr-psh-dep">
+        <div>
+          <label for="lhr-psh-dep-trainNo">Train No:</label><select id="lhr-psh-dep-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="lhr-psh-dep-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="lhr-psh-dep-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="lhr-psh-dep-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="lhr-psh-dep-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="lhr-psh-dep-expectedTime">Expected Time:</label><input type="time"
+            id="lhr-psh-dep-expectedTime" />
+        </div>
+        <div>
+          <label for="lhr-psh-dep-status">Status:</label><select id="lhr-psh-dep-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Departed">Departed</option>
+          </select>
+        </div>
+        <div>
+          <label for="lhr-psh-dep-platformNo">Platform No:</label><input type="text" id="lhr-psh-dep-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add LHR-PSH Departure</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-lhr-psh-dep" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- PSH-LHR Arrival -->
+    <section class="form-section form-section-psh-lhr">
+      <h2>PSH - LHR (Arrival) / پشاور - لاہور آمد</h2>
+      <form id="form-psh-lhr-arr">
+        <div>
+          <label for="psh-lhr-arr-trainNo">Train No:</label><select id="psh-lhr-arr-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="psh-lhr-arr-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="psh-lhr-arr-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="psh-lhr-arr-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="psh-lhr-arr-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="psh-lhr-arr-expectedTime">Expected Time:</label><input type="time"
+            id="psh-lhr-arr-expectedTime" />
+        </div>
+        <div>
+          <label for="psh-lhr-arr-status">Status:</label><select id="psh-lhr-arr-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Arrived">Arrived</option>
+          </select>
+        </div>
+        <div>
+          <label for="psh-lhr-arr-platformNo">Platform No:</label><input type="text" id="psh-lhr-arr-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add PSH-LHR Arrival</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-psh-lhr-arr" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- LHR-FSLD Departure -->
+    <section class="form-section form-section-lhr-fsld">
+      <h2>
+        LHR - FSLD- Mianwali-SKO (Departure) / لاہور - فیصل آباد-
+        میانوالی-شورکوٹ روانگی
+      </h2>
+      <form id="form-lhr-fsld-dep">
+        <div>
+          <label for="lhr-fsld-dep-trainNo">Train No:</label><select id="lhr-fsld-dep-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="lhr-fsld-dep-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="lhr-fsld-dep-scheduledTime-display"
+            class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="lhr-fsld-dep-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="lhr-fsld-dep-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="lhr-fsld-dep-expectedTime">Expected Time:</label><input type="time"
+            id="lhr-fsld-dep-expectedTime" />
+        </div>
+        <div>
+          <label for="lhr-fsld-dep-status">Status:</label><select id="lhr-fsld-dep-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Departed">Departed</option>
+          </select>
+        </div>
+        <div>
+          <label for="lhr-fsld-dep-platformNo">Platform No:</label><input type="text" id="lhr-fsld-dep-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add LHR-FSLD Departure</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-lhr-fsld-dep" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- FSLD-LHR Arrival -->
+    <section class="form-section form-section-fsld-lhr">
+      <h2>
+        SKO-FSLD-Mianwali-LHR (Arrival) / -شورکوٹ میانوالی فیصل آباداہور
+      </h2>
+      <form id="form-fsld-lhr-arr">
+        <div>
+          <label for="fsld-lhr-arr-trainNo">Train No:</label><select id="fsld-lhr-arr-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="fsld-lhr-arr-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="fsld-lhr-arr-scheduledTime-display"
+            class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="fsld-lhr-arr-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="fsld-lhr-arr-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="fsld-lhr-arr-expectedTime">Expected Time:</label><input type="time"
+            id="fsld-lhr-arr-expectedTime" />
+        </div>
+        <div>
+          <label for="fsld-lhr-arr-status">Status:</label><select id="fsld-lhr-arr-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Arrived">Arrived</option>
+          </select>
+        </div>
+        <div>
+          <label for="fsld-lhr-arr-platformNo">Platform No:</label><input type="text" id="fsld-lhr-arr-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add FSLD-LHR Arrival</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-fsld-lhr-arr" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- LHR-NWL Departure -->
+    <section class="form-section form-section-lhr-nwl">
+      <h2>LHR - NWL (Departure) / لاہور - نارووال روانگی</h2>
+      <form id="form-lhr-nwl-dep">
+        <div>
+          <label for="lhr-nwl-dep-trainNo">Train No:</label><select id="lhr-nwl-dep-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="lhr-nwl-dep-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="lhr-nwl-dep-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="lhr-nwl-dep-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="lhr-nwl-dep-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="lhr-nwl-dep-expectedTime">Expected Time:</label><input type="time"
+            id="lhr-nwl-dep-expectedTime" />
+        </div>
+        <div>
+          <label for="lhr-nwl-dep-status">Status:</label><select id="lhr-nwl-dep-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Departed">Departed</option>
+          </select>
+        </div>
+        <div>
+          <label for="lhr-nwl-dep-platformNo">Platform No:</label><input type="text" id="lhr-nwl-dep-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add LHR-NWL Departure</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-lhr-nwl-dep" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- NWL-LHR Arrival -->
+    <section class="form-section form-section-nwl-lhr">
+      <h2>NWL - LHR (Arrival) / نارووال - لاہور آمد</h2>
+      <form id="form-nwl-lhr-arr">
+        <div>
+          <label for="nwl-lhr-arr-trainNo">Train No:</label><select id="nwl-lhr-arr-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="nwl-lhr-arr-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="nwl-lhr-arr-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="nwl-lhr-arr-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="nwl-lhr-arr-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="nwl-lhr-arr-expectedTime">Expected Time:</label><input type="time"
+            id="nwl-lhr-arr-expectedTime" />
+        </div>
+        <div>
+          <label for="nwl-lhr-arr-status">Status:</label><select id="nwl-lhr-arr-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Arrived">Arrived</option>
+          </select>
+        </div>
+        <div>
+          <label for="nwl-lhr-arr-platformNo">Platform No:</label><input type="text" id="nwl-lhr-arr-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add NWL-LHR Arrival</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-nwl-lhr-arr" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- LHR-RWP Departure -->
+    <section class="form-section form-section-lhr-rwp">
+      <h2>LHR - RWP (Departure) / لاہور - راولپنڈی روانگی</h2>
+      <form id="form-lhr-rwp-dep">
+        <div>
+          <label for="lhr-rwp-dep-trainNo">Train No:</label><select id="lhr-rwp-dep-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="lhr-rwp-dep-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="lhr-rwp-dep-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="lhr-rwp-dep-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="lhr-rwp-dep-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="lhr-rwp-dep-expectedTime">Expected Time:</label><input type="time"
+            id="lhr-rwp-dep-expectedTime" />
+        </div>
+        <div>
+          <label for="lhr-rwp-dep-status">Status:</label><select id="lhr-rwp-dep-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Departed">Departed</option>
+          </select>
+        </div>
+        <div>
+          <label for="lhr-rwp-dep-platformNo">Platform No:</label><input type="text" id="lhr-rwp-dep-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add LHR-RWP Departure</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-lhr-rwp-dep" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- RWP-LHR Arrival -->
+    <section class="form-section form-section-rwp-lhr">
+      <h2>RWP - LHR (Arrival) / راولپنڈی - لاہور آمد</h2>
+      <form id="form-rwp-lhr-arr">
+        <div>
+          <label for="rwp-lhr-arr-trainNo">Train No:</label><select id="rwp-lhr-arr-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="rwp-lhr-arr-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="rwp-lhr-arr-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="rwp-lhr-arr-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="rwp-lhr-arr-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="rwp-lhr-arr-expectedTime">Expected Time:</label><input type="time"
+            id="rwp-lhr-arr-expectedTime" />
+        </div>
+        <div>
+          <label for="rwp-lhr-arr-status">Status:</label><select id="rwp-lhr-arr-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Arrived">Arrived</option>
+          </select>
+        </div>
+        <div>
+          <label for="rwp-lhr-arr-platformNo">Platform No:</label><input type="text" id="rwp-lhr-arr-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add RWP-LHR Arrival</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-rwp-lhr-arr" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- LHR-QTA Departure -->
+    <section class="form-section form-section-lhr-qta">
+      <h2>LHR - QTA (Departure) / لاہور - کوئٹہ روانگی</h2>
+      <form id="form-lhr-qta-dep">
+        <div>
+          <label for="lhr-qta-dep-trainNo">Train No:</label><select id="lhr-qta-dep-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="lhr-qta-dep-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="lhr-qta-dep-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="lhr-qta-dep-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="lhr-qta-dep-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="lhr-qta-dep-expectedTime">Expected Time:</label><input type="time"
+            id="lhr-qta-dep-expectedTime" />
+        </div>
+        <div>
+          <label for="lhr-qta-dep-status">Status:</label><select id="lhr-qta-dep-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Departed">Departed</option>
+          </select>
+        </div>
+        <div>
+          <label for="lhr-qta-dep-platformNo">Platform No:</label><input type="text" id="lhr-qta-dep-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add LHR-QTA Departure</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-lhr-qta-dep" class="data-table-wrapper"></div>
+    </section>
+
+    <!-- QTA-LHR Arrival -->
+    <section class="form-section form-section-qta-lhr">
+      <h2>QTA - LHR (Arrival) / کوئٹہ - لاہور آمد</h2>
+      <form id="form-qta-lhr-arr">
+        <div>
+          <label for="qta-lhr-arr-trainNo">Train No:</label><select id="qta-lhr-arr-trainNo" required>
+            <option value="">-- Select Train No --</option>
+          </select>
+        </div>
+        <div>
+          <label>Train Name:</label><span id="qta-lhr-arr-trainName-display" class="auto-display-field">-</span>
+        </div>
+        <div>
+          <label>Scheduled Time:</label><span id="qta-lhr-arr-scheduledTime-display" class="auto-display-field">-</span>
+        </div>
+        <input type="hidden" id="qta-lhr-arr-hidden-trainName" name="hiddenTrainName" />
+        <input type="hidden" id="qta-lhr-arr-hidden-scheduledTime" name="hiddenScheduledTime" />
+        <div>
+          <label for="qta-lhr-arr-expectedTime">Expected Time:</label><input type="time"
+            id="qta-lhr-arr-expectedTime" />
+        </div>
+        <div>
+          <label for="qta-lhr-arr-status">Status:</label><select id="qta-lhr-arr-status">
+            <option value="On Time">On Time</option>
+            <option value="Late">Late</option>
+            <option value="Before">Before</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Arrived">Arrived</option>
+          </select>
+        </div>
+        <div>
+          <label for="qta-lhr-arr-platformNo">Platform No:</label><input type="text" id="qta-lhr-arr-platformNo" />
+        </div>
+        <div class="form-buttons">
+          <button type="submit">Add QTA-LHR Arrival</button>
+          <button type="button" class="cancel-edit-btn" style="display: none">
+            Cancel Edit
+          </button>
+        </div>
+      </form>
+      <div id="table-data-qta-lhr-arr" class="data-table-wrapper"></div>
+    </section>
+  </div>
+  <!-- .forms-container -->
+
+  <div class="footer">Developed for Pakistan Railways by M.A Khan</div>
+  <script type="module" src="./master_script.js"></script>
+</body>
+
+</html>
