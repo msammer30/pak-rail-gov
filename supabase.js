@@ -5,8 +5,8 @@ import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
 // const supabaseUrl = 'https://wbqumxtskgjmbhowaazn.supabase.co';
 // const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndicXVteHRza2dqbWJob3dhYXpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2MTc0MjIsImV4cCI6MjA2ODE5MzQyMn0.obEW-zi8XtyzkHUKJLtWyQx01dwhUn0-LQxpqGDDi7s';
 
-const supabaseUrl = 'https://dlvenrcfpwacdqsqkyij.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsdmVucmNmcHdhY2Rxc3FreWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzQ4NzEsImV4cCI6MjA4MTkxMDg3MX0.hAPIGlXmUl5lzvaSN2k6-4vbRonhYtjajuEYtw_Fk7k';
+const supabaseUrl = 'https://wbqumxtskgjmbhowaazn.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndicXVteHRza2dqbWJob3dhYXpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2MTc0MjIsImV4cCI6MjA2ODE5MzQyMn0.obEW-zi8XtyzkHUKJLtWyQx01dwhUn0-LQxpqGDDi7s';
 
 // Initialize the Supabase client
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
