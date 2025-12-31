@@ -5,8 +5,13 @@ import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
 // const supabaseUrl = 'https://wbqumxtskgjmbhowaazn.supabase.co';
 // const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndicXVteHRza2dqbWJob3dhYXpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2MTc0MjIsImV4cCI6MjA2ODE5MzQyMn0.obEW-zi8XtyzkHUKJLtWyQx01dwhUn0-LQxpqGDDi7s';
 
-const supabaseUrl = 'https://dlvenrcfpwacdqsqkyij.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsdmVucmNmcHdhY2Rxc3FreWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzQ4NzEsImV4cCI6MjA4MTkxMDg3MX0.hAPIGlXmUl5lzvaSN2k6-4vbRonhYtjajuEYtw_Fk7k';
+// Faizan Mustafa
+// const supabaseUrl = 'https://dlvenrcfpwacdqsqkyij.supabase.co';
+// const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsdmVucmNmcHdhY2Rxc3FreWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzQ4NzEsImV4cCI6MjA4MTkxMDg3MX0.hAPIGlXmUl5lzvaSN2k6-4vbRonhYtjajuEYtw_Fk7k';
+
+// Shehnaz Qamar
+const supabaseUrl = 'https://ymkpmskxempxkwvnolzg.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlta3Btc2t4ZW1weGt3dm5vbHpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxMjMxMDYsImV4cCI6MjA4MjY5OTEwNn0.ELkNeenlshWpIwBKccjog-VuM_zt_M7KKJCItgxv4G4';
 
 // Initialize the Supabase client
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -169,7 +174,7 @@ async function upsertGeneralMessage(content) {
 async function uploadVideo(file) {
     try {
         const fileName = `${Date.now()}_${file.name}`;
-        const bucketName = 'pak-rail-gov-media';
+        const bucketName = 'pak-rail-schedule-media';
 
         // 1. Delete all existing files in the bucket to "overwrite"
         const { data: existingFiles, error: listError } = await supabase.storage
