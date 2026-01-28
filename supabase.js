@@ -1,5 +1,5 @@
 // Supabase Client Configuration
-import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Replace these with your actual Supabase URL and anon key
 // const supabaseUrl = 'https://wbqumxtskgjmbhowaazn.supabase.co';
