@@ -1,3 +1,4 @@
+import { runCycleCoordinator } from './cycle_coordinator.js';
 document.addEventListener('DOMContentLoaded', () => {
     const departuresTableBody = document.getElementById('lhr-psh-departures-body');
     const arrivalsTableBody = document.getElementById('psh-lhr-arrivals-body');
@@ -64,26 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Automatic Page Cycling
-    const pageSequence = [ // Defines the order of pages for automatic cycling
-        'display_lhr_kc.html', 
-        'display_lhr_psh.html', 
-        'display_lhr_fsld.html', 
-        'display_lhr_rwp.html', 
-        'display_lhr_nwl.html', 
-        'display_lhr_mianwali.html', 
-        'display_lhr_qta.html'
-    ];
-    const currentPageFileName = window.location.pathname.split('/').pop(); 
-    const currentIndexInSequence = pageSequence.indexOf(currentPageFileName);
-    
-    if (currentIndexInSequence !== -1) { 
-        const nextPageIndex = (currentIndexInSequence + 1) % pageSequence.length; 
-        const nextPageFileName = pageSequence[nextPageIndex];
-        
-        setTimeout(() => {
-            window.location.href = nextPageFileName;
-        }, 30000); 
-    }
+    runCycleCoordinator(window.location.pathname.split('/').pop());
 
     // --- Date/Time Display Logic ---
     const dateTimeElement = document.getElementById('current-datetime');

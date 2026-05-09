@@ -176,99 +176,126 @@ async function uploadVideo(file) {
         const fileName = `${Date.now()}_${file.name}`;
         const bucketName = 'pak-rail-schedule-media';
 
-        // 1. Delete all existing files in the bucket to "overwrite"
-        const { data: existingFiles, error: listError } = await supabase.storage
-            .from(bucketName)
-            .list();
-        
-        if (listError) throw listError;
-
-        if (existingFiles && existingFiles.length > 0) {
-            const filesToDelete = existingFiles.map(f => f.name);
-            const { error: deleteError } = await supabase.storage
-                .from(bucketName)
-                .remove(filesToDelete);
-            
-            if (deleteError) console.warn('Failed to clean up old files:', deleteError);
-            else console.log('Cleaned up old files:', filesToDelete);
-        }
-
-        // 2. Upload the new file
+        // 1. Upload the new file
         const { data, error } = await supabase.storage
             .from(bucketName)
             .upload(fileName, file);
 
         if (error) throw error;
 
-        // 3. Get public URL
+        // 2. Get public URL
         const { data: publicUrlData } = supabase.storage
             .from(bucketName)
             .getPublicUrl(fileName);
 
         const publicUrl = publicUrlData.publicUrl;
 
-        // 4. Update "general_message" table "uploaded_media" column
-        // We assume there is only one row with the fixed ID
-        const fixedId = '00000000-0000-0000-0000-000000000001';
-        
-        // First optimize: try to update specific column
-        const { error: updateError } = await supabase
-            .from('general_message')
-            .update({ uploaded_media: publicUrl })
-            .eq('id', fixedId);
-
-        if (updateError) {
-             // If update failed (maybe row doesn't exist?), try upsert
-             const { error: upsertError } = await supabase
-                .from('general_message')
-                .upsert(
-                    { id: fixedId, uploaded_media: publicUrl, content: 'Default Message' }, // ensure content is not null if row is new
-                    { onConflict: 'id' }
-                );
-             if (upsertError) throw upsertError;
-        }
-
-        // 5. Still save to "videos" table for history/logging (optional but good for debugging)
-         await supabase
+        // 3. Save to "videos" table for playlist
+         const { data: dbData, error: dbError } = await supabase
             .from('videos')
             .insert([{
                 filename: fileName,
                 public_url: publicUrl
-            }]);
+            }])
+            .select();
 
-        return { success: true, data: publicUrlData, filePath: fileName, publicUrl };
+         if (dbError) throw dbError;
+
+        return { success: true, data: publicUrlData, filePath: fileName, publicUrl, id: dbData[0].id };
     } catch (error) {
         console.error('Error uploading video:', error);
         return { success: false, message: 'Failed to upload video: ' + error.message };
     }
 }
 
-// Function to get the latest video
-async function getLatestVideo() {
-    console.log('getLatestVideo called in supabase.js (New Logic)');
+// Function to get all videos for the playlist
+async function getVideos() {
     try {
-        // Fetch URL from "general_message" table "uploaded_media" column
+        const { data, error } = await supabase
+            .from('videos')
+            .select('*')
+            .order('created_at', { ascending: true }); // Play oldest first
+
+        if (error) throw error;
+        return { success: true, data: data || [] };
+    } catch (error) {
+        console.error('Error fetching videos:', error);
+        return { success: false, message: 'Failed to fetch videos: ' + error.message };
+    }
+}
+
+// Function to delete a video from storage and database
+async function deleteVideo(id, filename) {
+    try {
+        const bucketName = 'pak-rail-schedule-media';
+
+        // 1. Delete from bucket
+        const { error: storageError } = await supabase.storage
+            .from(bucketName)
+            .remove([filename]);
+            
+        if (storageError) console.warn('Storage deletion error:', storageError);
+
+        // 2. Delete from database
+        const { error: dbError } = await supabase
+            .from('videos')
+            .delete()
+            .eq('id', id);
+
+        if (dbError) throw dbError;
+
+        return { success: true };
+    } catch (error) {
+        console.error('Error deleting video:', error);
+        return { success: false, message: 'Failed to delete video: ' + error.message };
+    }
+}
+
+// Function to get global display settings
+async function getGlobalSettings() {
+    try {
         const fixedId = '00000000-0000-0000-0000-000000000001';
         
         const { data, error } = await supabase
             .from('general_message')
-            .select('uploaded_media')
+            .select('slides_between_videos')
             .eq('id', fixedId)
             .single();
 
-        if (error) throw error;
+        if (error && error.code !== 'PGRST116') throw error; // Ignore not found
+        
+        return { success: true, slides_between_videos: data?.slides_between_videos ?? 2 };
+    } catch (error) {
+        console.error('Error fetching settings:', error);
+        return { success: false, slides_between_videos: 2 }; // Default to 2
+    }
+}
 
-        if (data && data.uploaded_media) {
-            console.log('Video URL found in general_message:', data.uploaded_media);
-            return { success: true, url: data.uploaded_media };
+// Function to update global display settings
+async function updateGlobalSettings(slidesBetweenVideos) {
+    try {
+        const fixedId = '00000000-0000-0000-0000-000000000001';
+        
+        const { error } = await supabase
+            .from('general_message')
+            .update({ slides_between_videos: slidesBetweenVideos })
+            .eq('id', fixedId);
+
+        if (error) {
+            // If row doesn't exist yet, insert it
+            const { error: upsertError } = await supabase
+                .from('general_message')
+                .upsert(
+                    { id: fixedId, slides_between_videos: slidesBetweenVideos, content: 'Default Update' },
+                    { onConflict: 'id' }
+                );
+            if (upsertError) throw upsertError;
         }
 
-        console.warn('No uploaded_media found in general_message');
-        return { success: false, message: 'No video URL found.' };
-
+        return { success: true };
     } catch (error) {
-        console.error('Error fetching latest video URL:', error);
-        return { success: false, message: 'Failed to fetch video URL: ' + error.message };
+        console.error('Error updating settings:', error);
+        return { success: false, message: 'Failed to update settings' };
     }
 }
 
@@ -281,7 +308,10 @@ export {
     updateSchedule,
     deleteSchedule,
     uploadVideo,
-    getLatestVideo,
+    getVideos,
+    deleteVideo,
     getGeneralMessage,
-    upsertGeneralMessage
+    upsertGeneralMessage,
+    getGlobalSettings,
+    updateGlobalSettings
 }; 

@@ -34,66 +34,62 @@
 </head>
 <body>
     <div id="loading" class="loading-overlay">Loading latest video...</div>
-    <video id="video-player" autoplay muted loop playsinline></video>
+    <video id="video-player" autoplay playsinline></video>
 
     <script type="module">
-        console.log('Video Display Script Started');
-        import { getLatestVideo } from './supabase.js';
-        console.log('Import successful:', typeof getLatestVideo);
+        import { getVideos } from './supabase.js';
 
         document.addEventListener('DOMContentLoaded', async () => {
             const videoPlayer = document.getElementById('video-player');
             const loading = document.getElementById('loading');
 
-            console.log('DOMContentLoaded triggered');
+            const continueCycle = () => {
+                const nextSlide = localStorage.getItem('next_schedule_slide') || 'display_lhr_kc.html';
+                window.location.href = nextSlide;
+            };
 
-            // Fetch and play latest video
+            // Fetch playlist
             try {
-                console.log('Calling getLatestVideo...');
-                const result = await getLatestVideo();
-                console.log('getLatestVideo result:', result);
+                const result = await getVideos();
+                if (result.success && result.data && result.data.length > 0) {
+                    const playlist = result.data;
+                    let currentIndex = parseInt(localStorage.getItem('current_video_index') || '0', 10);
+                    
+                    if (currentIndex >= playlist.length || isNaN(currentIndex)) {
+                        currentIndex = 0;
+                    }
 
-                if (result.success && result.url) {
-                    console.log('Setting video source:', result.url);
-                    videoPlayer.src = result.url;
+                    const videoToPlay = playlist[currentIndex];
+                    videoPlayer.src = videoToPlay.public_url;
                     videoPlayer.style.display = 'block';
                     loading.style.display = 'none';
                     
+                    // Increment and save index for next time
+                    localStorage.setItem('current_video_index', (currentIndex + 1).toString());
+
+                    // Configure player to return to standard cycle when video finishes
+                    videoPlayer.onended = continueCycle;
+                    
                     // Force play
-                    videoPlayer.play().catch(e => console.warn('Autoplay prevented:', e));
+                    videoPlayer.play().catch(e => {
+                        console.warn('Autoplay prevented:', e);
+                        loading.textContent = 'Autoplay prevented. Redirecting...';
+                        loading.style.display = 'block';
+                        setTimeout(continueCycle, 3000);
+                    });
+
+                    // Safeguard: if video is very long or gets stuck, max 35 seconds
+                    setTimeout(continueCycle, 35000);
+
                 } else {
-                    console.warn('Video fetch failed or no URL:', result);
-                    loading.textContent = 'No video available to display.';
+                    console.warn('No videos in playlist.');
+                    loading.textContent = 'No videos available. Returning to cycle...';
+                    setTimeout(continueCycle, 3000);
                 }
             } catch (error) {
-                console.error('CRITICAL Error in video display:', error);
-                loading.textContent = 'Error loading video: ' + error.message;
-            }
-
-            // Automatic Page Cycling
-            const pageSequence = [
-                'display_lhr_kc.html', 
-                'display_lhr_mianwali.html', 
-                'display_lhr_psh.html', 
-                'display_lhr_fsld.html', 
-                'display_lhr_rwp.html', 
-                'display_lhr_nwl.html', 
-                'display_lhr_qta.html',
-                'display_message.html',
-                'video_display.html',
-                'image_display.html'
-            ];
-            
-            const currentPageFileName = window.location.pathname.split('/').pop();
-            const currentIndexInSequence = pageSequence.indexOf(currentPageFileName);
-            
-            if (currentIndexInSequence !== -1) {
-                const nextPageIndex = (currentIndexInSequence + 1) % pageSequence.length;
-                const nextPageFileName = pageSequence[nextPageIndex];
-                
-                setTimeout(() => {
-                    window.location.href = nextPageFileName;
-                }, 30000);
+                console.error('Error in video display:', error);
+                loading.textContent = 'Error loading video. Returning to cycle...';
+                setTimeout(continueCycle, 3000);
             }
         });
     </script>
