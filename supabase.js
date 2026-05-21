@@ -9,9 +9,9 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 // const supabaseUrl = 'https://dlvenrcfpwacdqsqkyij.supabase.co';
 // const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsdmVucmNmcHdhY2Rxc3FreWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzQ4NzEsImV4cCI6MjA4MTkxMDg3MX0.hAPIGlXmUl5lzvaSN2k6-4vbRonhYtjajuEYtw_Fk7k';
 
-// Shehnaz Qamar
-const supabaseUrl = 'https://ymkpmskxempxkwvnolzg.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlta3Btc2t4ZW1weGt3dm5vbHpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxMjMxMDYsImV4cCI6MjA4MjY5OTEwNn0.ELkNeenlshWpIwBKccjog-VuM_zt_M7KKJCItgxv4G4';
+// New Supabase Config from .env
+const supabaseUrl = 'https://dtmycayobtypsfupuyih.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0bXljYXlvYnR5cHNmdXB1eWloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNDM1OTEsImV4cCI6MjA5NDkxOTU5MX0.HK-ldfpZupx4Ynh2AMX9__jii1aD54MU-2pFFQFLx9Q';
 
 // Initialize the Supabase client
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -24,7 +24,7 @@ async function signIn(username, password) {
             .from('employees')
             .select('*')
             .eq('username', username)
-            .single();
+            .maybeSingle();
 
         console.log('Query result:', data);
 
@@ -172,6 +172,9 @@ async function upsertGeneralMessage(content) {
 
 // Video upload function
 async function uploadVideo(file) {
+    // Functionality temporarily disabled
+    return { success: false, message: 'Video upload is temporarily disabled.' };
+
     try {
         const fileName = `${Date.now()}_${file.name}`;
         const bucketName = 'pak-rail-schedule-media';
