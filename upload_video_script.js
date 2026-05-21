@@ -162,6 +162,10 @@ fileInput.addEventListener('change', (e) => {
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    statusMsg.textContent = 'Uploading is temporarily disabled.';
+    statusMsg.className = 'status error';
+    return;
+
     if (!selectedFile) return;
 
     statusMsg.textContent = 'Uploading...';

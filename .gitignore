@@ -1,3 +1,4 @@
 frontend
 pak-rail-next
 .env.local
+.env
